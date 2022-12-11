@@ -3,7 +3,7 @@ class User {
     this.id;
     this.name = name;
     this.surname = surname;
-    this.mail = mail;
+    this.email = mail;
     this.photo = photo;
     this.password = password;
   }

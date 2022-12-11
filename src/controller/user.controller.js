@@ -1,15 +1,15 @@
 const connection = require('../database')
 const User = require('../classes/user')
 
-const postUser = (req, res) => {
+const register = (req, res) => {
   let sql;
   let answer;
-  let user = new User(req.body.name, req.body.surname, req.body.mail, req.body.photo, req.body.password)
+  let user = new User(req.body.name, req.body.surname, req.body.email, req.body.photo, req.body.password)
   if (user != null) {
-    sql = `INSERT INTO user (name, surname, mail, photo, password) VALUES (\"${user.name}\", \"${user.surname}\",\"${user.mail}\",\"${user.photo}\",\"${user.password}\")`
+    sql = `INSERT INTO user (name, surname, email, photo, password) VALUES (\"${user.name}\", \"${user.surname}\",\"${user.email}\",\"${user.photo}\",\"${user.password}\")`
     answer = { error: false, code: 200, message: "User posted", result: user }
   } else {
-    console.log('Error to create');
+    console.log('User can\'t be null');
     answer = { error: true, code: 200, message: 'Error to create' }
   }
   connection.query(sql, (err, result) => {
@@ -25,21 +25,22 @@ const postUser = (req, res) => {
 }
 
 const login = (req, res) => {
-  let user = new User(null, null, req.body.mail, null, req.body.password)
-  let sql = `SELECT id_user, name, surname, mail, photo FROM user WHERE user.mail = "${user.mail}" AND user.password = "${user.password}"`
+  let user = new User(null, null, req.body.email, null, req.body.password)
+  console.log(user);
+  let sql = `SELECT id_user, name, surname, email, photo FROM user WHERE user.email = "${user.email}" AND user.password = "${user.password}"`
   let answer;
   connection.query(sql, (err, result) => {
-    if (!result.length) {
-      answer = { error: true, code: 200, message: 'Wrong credentials' }
-    } else {
+    if (result.length) {
       console.log('Query done');
       answer = result
       console.log(result);
+    } else {
+      answer = { error: true, code: 200, message: 'Wrong credentials' }
     }
     res.send(answer)
   })
 }
 
 
-module.exports = { postUser, login }
+module.exports = { register, login }
 

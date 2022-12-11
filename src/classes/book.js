@@ -1,6 +1,6 @@
 class Book {
   constructor(id_user, title, type, author, price, photo) {
-    this.id;
+    this.id_book;
     this.id_user = id_user;
     this.title = title;
     this.type = type;
